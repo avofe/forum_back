@@ -1,14 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import jwt, { JsonWebTokenError, TokenExpiredError } from "jsonwebtoken";
 import { IRequestAuth, IUserAuth } from "../modules/users/user.model";
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 export const authMiddleware = (
   req: IRequestAuth,
   res: Response,
   next: NextFunction
 ) => {
+  const JWT_SECRET = process.env.JWT_SECRET;
+
   try {
     if (!JWT_SECRET) {
       return res

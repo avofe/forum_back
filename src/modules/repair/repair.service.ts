@@ -55,4 +55,18 @@ export class RepairService {
 
     return repairs;
   }
+
+  async editStatus(id: number, status: "string") {
+    const repair = await prisma.repairRequest.findUnique({ where: { id } });
+
+    if (!repair) {
+      throw new Error(`Заявка с ID ${id} не найдена.`);
+    }
+
+    return prisma.repairRequest.update({
+      where: { id },
+      data: { status },
+      include: { user: true },
+    });
+  }
 }

@@ -53,4 +53,12 @@ export class RepairController {
     const data = await service.filterRepair(filter);
     res.json(data);
   }
+
+  async editStatus(req: Request, res: Response) {
+    const status = req.body.status;
+    const id = Number(req.params.id);
+    const data = await service.editStatus(id, status);
+
+    res.json(data);
+  }
 }
