@@ -90,4 +90,12 @@ export class UserService {
       users,
     };
   }
+
+  async editAccount(id: number, data: Partial<IUser>) {
+    const user = await prisma.user.update({
+      where: { id },
+      data,
+    });
+    return { user };
+  }
 }

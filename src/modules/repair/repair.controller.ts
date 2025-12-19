@@ -13,7 +13,6 @@ export class RepairController {
   async getAllRepair(req: IAdmin, res: Response) {
     try {
       const user = req.user;
-      console.log(user);
 
       if (!user) {
         return res

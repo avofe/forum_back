@@ -11,4 +11,6 @@ router.post("/login", controller.loginUser.bind(controller));
 router.get("/me", authMiddleware, controller.quickLogin.bind(controller));
 router.get("/all", authMiddleware, controller.getAllUsers.bind(controller));
 
+router.patch("/edit/:id", controller.editAccount.bind(controller));
+
 export default router;

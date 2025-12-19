@@ -80,4 +80,21 @@ export class UserController {
       }
     }
   }
+
+  async editAccount(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const data = req.body;
+
+      const user = await service.editAccount(Number(id), data);
+
+      res.json(user);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: "Неизвестная ошибка" });
+      }
+    }
+  }
 }
