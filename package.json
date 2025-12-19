@@ -14,7 +14,7 @@
         "prisma:migrate": "prisma migrate dev --name init"
     },
     "dependencies": {
-        "@prisma/client": "^6.16.1",
+        "@prisma/client": "^6.19.0",
         "bcrypt": "^6.0.0",
         "cors": "^2.8.5",
         "date-fns": "^4.1.0",
@@ -29,8 +29,17 @@
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "^24.3.3",
         "nodemon": "^3.1.10",
-        "prisma": "^6.16.1",
+        "prisma": "^6.19.0",
         "ts-node": "^10.9.2",
         "typescript": "^5.9.2"
-    }
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/D1edDuck/forum_back.git"
+    },
+    "keywords": [],
+    "bugs": {
+        "url": "https://github.com/D1edDuck/forum_back/issues"
+    },
+    "homepage": "https://github.com/D1edDuck/forum_back#readme"
 }

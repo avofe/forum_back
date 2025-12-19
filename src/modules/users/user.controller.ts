@@ -66,4 +66,18 @@ export class UserController {
       }
     }
   }
+
+  async getAllUsers(req: Request, res: Response) {
+    try {
+      const data = await service.getAllUsers();
+
+      res.json(data);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: "Неизвестная ошибка" });
+      }
+    }
+  }
 }

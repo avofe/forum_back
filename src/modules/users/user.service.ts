@@ -76,4 +76,18 @@ export class UserService {
       },
     };
   }
+
+  async getAllUsers() {
+    const [users, count] = await prisma.$transaction([
+      prisma.user.findMany({
+        select: { id: true, name: true, email: true, phone: true },
+      }),
+      prisma.user.count(),
+    ]);
+
+    return {
+      count,
+      users,
+    };
+  }
 }
