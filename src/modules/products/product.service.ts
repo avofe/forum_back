@@ -7,7 +7,10 @@ export class ProductService {
   }
 
   async getAllProducts() {
-    return prisma.product.findMany();
+    const products = await prisma.product.findMany();
+    const count = await prisma.product.count();
+
+    return { products, count };
   }
 
   async getProductById(id: number) {

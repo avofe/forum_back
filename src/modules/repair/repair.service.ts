@@ -14,7 +14,18 @@ export class RepairService {
   }
 
   async getAllRepair() {
-    return prisma.repairRequest.findMany({ include: { user: true } });
+    return prisma.repairRequest.findMany({
+      include: {
+        user: {
+          select: {
+            email: true,
+            name: true,
+            phone: true,
+            repairs: true,
+          },
+        },
+      },
+    });
   }
 
   async getAllRepairUser(userId: number) {
