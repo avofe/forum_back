@@ -14,7 +14,7 @@ export class RepairService {
   }
 
   async getAllRepair() {
-    return prisma.repairRequest.findMany({
+    const repairs = await prisma.repairRequest.findMany({
       include: {
         user: {
           select: {
@@ -26,6 +26,10 @@ export class RepairService {
         },
       },
     });
+
+    const count = await prisma.repairRequest.count();
+
+    return { count, repairs };
   }
 
   async getAllRepairUser(userId: number) {
