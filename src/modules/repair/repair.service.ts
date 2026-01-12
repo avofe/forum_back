@@ -25,6 +25,9 @@ export class RepairService {
           },
         },
       },
+      orderBy: {
+        created_at: "desc",
+      },
     });
 
     const count = await prisma.repairRequest.count();
@@ -33,7 +36,10 @@ export class RepairService {
   }
 
   async getAllRepairUser(userId: number) {
-    return prisma.repairRequest.findMany({ where: { userId } });
+    return prisma.repairRequest.findMany({
+      where: { userId },
+      orderBy: { created_at: "desc" },
+    });
   }
 
   async getRepairById(id: number) {

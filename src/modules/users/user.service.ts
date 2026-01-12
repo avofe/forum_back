@@ -81,6 +81,7 @@ export class UserService {
     const [users, count] = await prisma.$transaction([
       prisma.user.findMany({
         select: { id: true, name: true, email: true, phone: true },
+        orderBy: { id: "desc" },
       }),
       prisma.user.count(),
     ]);
