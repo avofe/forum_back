@@ -6,12 +6,20 @@ export class CategoryService {
     return prisma.category.create({
       data: {
         name: category.name,
+        slug: category.slug,
       },
     });
   }
 
   async getAllCategory() {
     return prisma.category.findMany();
+  }
+
+  async getAllWithCount() {
+    const category = await prisma.category.findMany();
+    const count = await prisma.category.count();
+
+    return { category, count };
   }
 
   async getCategoryById(id: number) {

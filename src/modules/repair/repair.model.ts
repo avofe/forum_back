@@ -1,5 +1,3 @@
-import { Request } from "express";
-
 export interface IRepair {
   userId: number;
   cause: string;
@@ -7,7 +5,11 @@ export interface IRepair {
 }
 
 export interface IFilter {
-  status: "fulfilled" | "pending" | undefined;
-  date: string | undefined;
-  id: number | undefined;
+  status?: "fulfilled" | "pending";
+  date?: string;
+  id?: number;
+  userId?: number;
+  cause?: string;
+  comment?: string;
+  created_at?: Date;
 }

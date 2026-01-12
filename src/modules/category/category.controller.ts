@@ -19,4 +19,9 @@ export class CategoryController {
     const category = await service.getCategoryById(id);
     res.json(category);
   }
+
+  async getAllWithCount(req: Request, res: Response) {
+    const category = await service.getAllWithCount();
+    res.json(category);
+  }
 }

@@ -43,29 +43,40 @@ export class RepairService {
   }
 
   async filterRepair(filter: IFilter) {
-    const { status, date, id } = filter;
-
     const where: any = {};
 
-    if (status !== undefined) {
-      where.status = status;
+    if (filter.id !== undefined) {
+      where.id = Number(filter.id);
     }
 
-    if (date !== undefined) {
-      const parsDate = new Date(date);
+    if (filter.userId !== undefined) {
+      where.userId = Number(filter.userId);
+    }
+
+    if (filter.status) {
+      where.status = filter.status;
+    }
+
+    if (filter.date) {
+      const parsedDate = new Date(filter.date);
       where.created_at = {
-        gte: startOfDay(parsDate),
-        lte: endOfDay(parsDate),
+        gte: startOfDay(parsedDate),
+        lte: endOfDay(parsedDate),
       };
     }
 
-    if (id !== undefined) {
-      where.id = Number(id);
+    if (filter.cause) {
+      where.cause = { contains: filter.cause, mode: "insensitive" };
+    }
+
+    if (filter.comment) {
+      where.comment = { contains: filter.comment, mode: "insensitive" };
     }
 
     const repairs = await prisma.repairRequest.findMany({
       where,
-      include: { user: true },
+      include: { user: { select: { email: true, name: true, phone: true } } },
+      orderBy: { created_at: "desc" },
     });
 
     return repairs;
