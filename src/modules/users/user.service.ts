@@ -99,4 +99,8 @@ export class UserService {
     });
     return { user };
   }
+
+  async deleteUser(id: number) {
+    await prisma.user.delete({ where: { id } });
+  }
 }

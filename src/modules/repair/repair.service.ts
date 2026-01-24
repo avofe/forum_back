@@ -101,4 +101,8 @@ export class RepairService {
       include: { user: true },
     });
   }
+
+  async deleteRepair(id: number) {
+    return prisma.repairRequest.delete({ where: { id } });
+  }
 }

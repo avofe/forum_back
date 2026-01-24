@@ -97,4 +97,20 @@ export class UserController {
       }
     }
   }
+
+  async deleteUser(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+
+      await service.deleteUser(Number(id));
+
+      res.json({ message: "Пользователь удален" });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        res.status(500).json({ message: err.message });
+      } else {
+        res.status(500).json({ message: "Неизвестная ошибка" });
+      }
+    }
+  }
 }

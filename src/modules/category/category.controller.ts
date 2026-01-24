@@ -24,4 +24,10 @@ export class CategoryController {
     const category = await service.getAllWithCount();
     res.json(category);
   }
+
+  async deleteCategory(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    await service.deleteCategory(id);
+    res.json({ message: "Deleted" });
+  }
 }

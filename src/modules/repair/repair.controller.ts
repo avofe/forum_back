@@ -60,4 +60,10 @@ export class RepairController {
 
     res.json(data);
   }
+
+  async deleteRepair(req: Request, res: Response) {
+    const id = Number(req.params.id);
+    await service.deleteRepair(id);
+    res.json({ message: "Deleted" });
+  }
 }

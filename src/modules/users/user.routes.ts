@@ -13,4 +13,5 @@ router.get("/all", authMiddleware, controller.getAllUsers.bind(controller));
 
 router.patch("/edit/:id", controller.editAccount.bind(controller));
 
+router.delete("/delete/:id", controller.deleteUser.bind(controller));
 export default router;
