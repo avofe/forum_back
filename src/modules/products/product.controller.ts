@@ -5,8 +5,31 @@ const service = new ProductService();
 
 export class UserController {
   async createProduct(req: Request, res: Response) {
-    const user = await service.createProduct(req.body);
-    res.json(user);
+    try {
+      const file = req.file;
+
+      const { name, brand, model, description, price, stock, categoryId } =
+        req.body;
+
+      const productData = {
+        name,
+        brand,
+        model,
+        description,
+        price: Number(price),
+        stock: stock ? Number(stock) : 0,
+        categoryId: Number(categoryId),
+        imageUrl: file ? `/uploads/products/${file.filename}` : undefined,
+      };
+
+      const product = await service.createProduct(productData);
+      res.json(product);
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: "Ошибка при создании товара", error: err });
+    }
   }
 
   async getAllProducts(req: Request, res: Response) {

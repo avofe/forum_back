@@ -31,6 +31,7 @@ model Product {
   name        String
   brand       String
   model       String
+  imageUrl    String?
   description String?
   price       Float
   stock       Int        @default(0)

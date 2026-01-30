@@ -1,10 +1,15 @@
 import { Router } from "express";
 import { UserController } from "./product.controller";
+import { upload } from "./multer";
 
 const router = Router();
 const controller = new UserController();
 
-router.post("/", controller.createProduct.bind(controller));
+router.post(
+  "/",
+  upload.single("image"),
+  controller.createProduct.bind(controller)
+);
 router.get("/", controller.getAllProducts.bind(controller));
 
 router.get("/search", controller.findProductsByName.bind(controller));
