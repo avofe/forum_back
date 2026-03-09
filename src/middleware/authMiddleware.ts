@@ -5,7 +5,7 @@ import { IRequestAuth, IUserAuth } from "../modules/users/user.model";
 export const authMiddleware = (
   req: IRequestAuth,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const JWT_SECRET = process.env.JWT_SECRET;
 

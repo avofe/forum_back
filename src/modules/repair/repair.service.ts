@@ -15,6 +15,9 @@ export class RepairService {
 
   async getAllRepair() {
     const repairs = await prisma.repairRequest.findMany({
+      where: {
+        status: { not: "archive" },
+      },
       include: {
         user: {
           select: {
@@ -105,4 +108,6 @@ export class RepairService {
   async deleteRepair(id: number) {
     return prisma.repairRequest.delete({ where: { id } });
   }
+
+  // async editRepair(id: number, data: );
 }

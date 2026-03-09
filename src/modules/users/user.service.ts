@@ -38,7 +38,7 @@ export class UserService {
   async loginUser(data: IUserLogin) {
     const user = await prisma.user.findUnique({ where: { phone: data.phone } });
 
-    if (!user) throw new Error("Пользователь не найдены");
+    if (!user) throw new Error("Пользователь не найден");
 
     const isValid = await bcrypt.compare(data.password, user.password);
     if (!isValid) throw new Error("Неверный пароль");
