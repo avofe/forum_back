@@ -17,7 +17,6 @@ export class UserController {
 
       res.status(201).json(data);
     } catch (err: any) {
-      console.error(err);
       res.status(500).json({
         message: "Ошибка при создании пользователя",
         error: err.message,

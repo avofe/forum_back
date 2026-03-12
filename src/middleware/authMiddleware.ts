@@ -34,7 +34,6 @@ export const authMiddleware = (
     if (error instanceof JsonWebTokenError) {
       return res.status(403).json({ message: "Недействительный токен" });
     }
-    console.error("authMiddleware error:", error);
     return res.status(500).json({ message: "Ошибка аутентификации" });
   }
 };

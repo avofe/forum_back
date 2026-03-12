@@ -25,7 +25,6 @@ export class UserController {
       const product = await service.createProduct(productData);
       res.json(product);
     } catch (err) {
-      console.error(err);
       res
         .status(500)
         .json({ message: "Ошибка при создании товара", error: err });
@@ -86,7 +85,6 @@ export class UserController {
       const { products, count } = await service.filterProducts(filter);
       res.json({ products, count });
     } catch (error) {
-      console.error(error);
       res.status(500).json({ message: "Ошибка фильтрации", error });
     }
   }
