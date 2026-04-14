@@ -1,0 +1,82 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserController = void 0;
+const product_service_1 = require("./product.service");
+const service = new product_service_1.ProductService();
+class UserController {
+    async createProduct(req, res) {
+        try {
+            const file = req.file;
+            const { name, brand, model, description, price, stock, categoryId } = req.body;
+            const productData = {
+                name,
+                brand,
+                model,
+                description,
+                price: Number(price),
+                stock: stock ? Number(stock) : 0,
+                categoryId: Number(categoryId),
+                imageUrl: file ? `/uploads/products/${file.filename}` : undefined,
+            };
+            const product = await service.createProduct(productData);
+            res.json(product);
+        }
+        catch (err) {
+            res
+                .status(500)
+                .json({ message: "Ошибка при создании товара", error: err });
+        }
+    }
+    async getAllProducts(req, res) {
+        const users = await service.getAllProducts();
+        res.json(users);
+    }
+    async getProductById(req, res) {
+        const id = Number(req.params.id);
+        const user = await service.getProductById(id);
+        res.json(user);
+    }
+    async updateProduct(req, res) {
+        const id = Number(req.params.id);
+        const user = await service.updateProduct(id, req.body);
+        res.json(user);
+    }
+    async deleteProduct(req, res) {
+        const id = Number(req.params.id);
+        await service.deleteProduct(id);
+        res.json({ message: "Deleted" });
+    }
+    async findProductsByName(req, res) {
+        const { q } = req.query;
+        if (!q || typeof q !== "string") {
+            return res
+                .status(400)
+                .json({ message: "Query parameter 'q' is required" });
+        }
+        try {
+            const products = await service.findProducts(q);
+            res.json(products);
+        }
+        catch (error) {
+            res.status(500).json({ message: "Ошибка поиска", error: error });
+        }
+    }
+    async filterProducts(req, res) {
+        try {
+            const { categoryId, brand, stock, minValue, maxValue } = req.query;
+            const filter = {
+                categoryId: categoryId ? Number(categoryId) : undefined,
+                brand: brand ? brand.split(",") : undefined,
+                stock: stock ? stock.split(",") : undefined,
+                minValue: minValue ? Number(minValue) : undefined,
+                maxValue: maxValue ? Number(maxValue) : undefined,
+            };
+            const { products, count } = await service.filterProducts(filter);
+            res.json({ products, count });
+        }
+        catch (error) {
+            res.status(500).json({ message: "Ошибка фильтрации", error });
+        }
+    }
+}
+exports.UserController = UserController;
