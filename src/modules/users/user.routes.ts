@@ -7,6 +7,7 @@ import {
   validateLogin,
   validateRegister,
 } from "./user.validator";
+import { roleMiddleware } from "../../middleware/roleMiddleware";
 
 const router = Router();
 const controller = new UserController();
@@ -25,14 +26,25 @@ router.post(
 );
 
 router.get("/me", authMiddleware, controller.quickLogin.bind(controller));
-router.get("/all", authMiddleware, controller.getAllUsers.bind(controller));
+router.get(
+  "/all",
+  authMiddleware,
+  roleMiddleware(["admin"]),
+  controller.getAllUsers.bind(controller),
+);
 
 router.patch(
   "/edit/:id",
+  authMiddleware,
   validateEdit,
   handleValidationErrors,
   controller.editAccount.bind(controller),
 );
 
-router.delete("/delete/:id", controller.deleteUser.bind(controller));
+router.delete(
+  "/delete/:id",
+  authMiddleware,
+  roleMiddleware(["admin"]),
+  controller.deleteUser.bind(controller),
+);
 export default router;
