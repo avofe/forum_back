@@ -20,6 +20,14 @@ router.get("/search", controller.findProductsByName.bind(controller));
 
 router.get("/filter", controller.filterProducts.bind(controller));
 
+router.post(
+  "/:id/image",
+  authMiddleware,
+  roleMiddleware(["admin"]),
+  upload.single("image"),
+  controller.uploadImage.bind(controller),
+);
+
 router.get("/:id", controller.getProductById.bind(controller));
 router.put(
   "/:id",

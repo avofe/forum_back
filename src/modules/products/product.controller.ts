@@ -93,6 +93,18 @@ export class ProductController {
     }
   }
 
+  async uploadImage(req: Request, res: Response) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "Файл не загружен" });
+      }
+      const imageUrl = `/uploads/products/${req.file.filename}`;
+      res.json({ imageUrl });
+    } catch {
+      res.status(500).json({ message: "Ошибка загрузки изображения" });
+    }
+  }
+
   async filterProducts(req: Request, res: Response) {
     try {
       const { categoryId, brand, stock, minValue, maxValue } = req.query;
