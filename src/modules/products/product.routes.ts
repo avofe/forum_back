@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { UserController } from "./product.controller";
+import { ProductController } from "./product.controller";
 import { upload } from "./multer";
 import { authMiddleware } from "../../middleware/authMiddleware";
 import { roleMiddleware } from "../../middleware/roleMiddleware";
 
 const router = Router();
-const controller = new UserController();
+const controller = new ProductController();
 
 router.post(
   "/",
-  upload.single("image"),
   authMiddleware,
   roleMiddleware(["admin"]),
+  upload.single("image"),
   controller.createProduct.bind(controller),
 );
 router.get("/", controller.getAllProducts.bind(controller));

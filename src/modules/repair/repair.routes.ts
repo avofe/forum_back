@@ -2,14 +2,16 @@ import { Router } from "express";
 import { RepairController } from "./repair.controller";
 import { authMiddleware } from "../../middleware/authMiddleware";
 import { roleMiddleware } from "../../middleware/roleMiddleware";
+import { validateRepair } from "./repair.validator";
+import { handleValidationErrors } from "../../middleware/validation";
 
 const router = Router();
 const controller = new RepairController();
 
-router.post("/", controller.createRepair.bind(controller));
+router.post("/", validateRepair, handleValidationErrors, controller.createRepair.bind(controller));
 router.get("/", authMiddleware, controller.getAllRepair.bind(controller));
 router.post("/filter", controller.filterRepair.bind(controller));
-router.get("/me", controller.getAllRepairUser.bind(controller));
+router.get("/me", authMiddleware, controller.getAllRepairUser.bind(controller));
 router.patch(
   "/status/:id",
   authMiddleware,

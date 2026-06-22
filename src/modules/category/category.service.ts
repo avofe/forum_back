@@ -32,6 +32,10 @@ export class CategoryService {
     });
   }
 
+  async updateCategory(id: number, data: Partial<ICategory>) {
+    return prisma.category.update({ where: { id }, data });
+  }
+
   async deleteCategory(id: number) {
     return prisma.category.delete({ where: { id } });
   }

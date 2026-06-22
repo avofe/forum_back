@@ -16,12 +16,20 @@ export const authMiddleware = (
         .json({ message: "JWT секрет не настроен на сервере" });
     }
 
+    let token: string | undefined;
+
     const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return res.status(401).json({ message: "Требуется авторизация" });
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
     }
 
-    const token = authHeader.split(" ")[1];
+    if (!token && req.cookies?.jwt) {
+      token = req.cookies.jwt;
+    }
+
+    if (!token) {
+      return res.status(401).json({ message: "Требуется авторизация" });
+    }
 
     const decoded = jwt.verify(token, JWT_SECRET) as IUserAuth;
     req.user = decoded;

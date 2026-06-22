@@ -93,9 +93,17 @@ export class UserService {
   }
 
   async editAccount(id: number, data: Partial<IUser>) {
+    const allowedFields: Record<string, unknown> = {};
+    if (data.name !== undefined) allowedFields.name = data.name;
+    if (data.email !== undefined) allowedFields.email = data.email;
+    if (data.phone !== undefined) allowedFields.phone = data.phone;
+    if (data.password !== undefined) {
+      allowedFields.password = await bcrypt.hash(data.password, 10);
+    }
+
     const user = await prisma.user.update({
       where: { id },
-      data,
+      data: allowedFields,
     });
     return { user };
   }

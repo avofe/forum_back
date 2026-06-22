@@ -14,26 +14,24 @@ export class RepairService {
   }
 
   async getAllRepair() {
-    const repairs = await prisma.repairRequest.findMany({
-      where: {
-        status: { not: "archive" },
-      },
-      include: {
-        user: {
-          select: {
-            email: true,
-            name: true,
-            phone: true,
-            repairs: true,
+    const where = { status: { not: "archive" as const } };
+
+    const [repairs, count] = await prisma.$transaction([
+      prisma.repairRequest.findMany({
+        where,
+        include: {
+          user: {
+            select: {
+              email: true,
+              name: true,
+              phone: true,
+            },
           },
         },
-      },
-      orderBy: {
-        created_at: "desc",
-      },
-    });
-
-    const count = await prisma.repairRequest.count();
+        orderBy: { created_at: "desc" },
+      }),
+      prisma.repairRequest.count({ where }),
+    ]);
 
     return { count, repairs };
   }
@@ -91,7 +89,7 @@ export class RepairService {
     return repairs;
   }
 
-  async editStatus(id: number, status: "string") {
+  async editStatus(id: number, status: string) {
     const repair = await prisma.repairRequest.findUnique({ where: { id } });
 
     if (!repair) {

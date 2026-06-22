@@ -11,22 +11,28 @@
         "dev:network": "set HOST=0.0.0.0 nodemon --exec ts-node src/server.ts",
         "build": "tsc",
         "start": "node dist/server.js",
+        "postinstall": "prisma generate",
+        "db:migrate": "prisma migrate deploy",
         "prisma:generate": "prisma generate",
         "prisma:migrate": "prisma migrate dev --name init"
     },
     "dependencies": {
         "@prisma/client": "^6.19.0",
         "bcrypt": "^6.0.0",
+        "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "date-fns": "^4.1.0",
         "dotenv": "^17.2.2",
         "express": "^5.1.0",
+        "express-rate-limit": "^8.5.2",
         "express-validator": "^7.3.1",
+        "helmet": "^8.2.0",
         "jsonwebtoken": "^9.0.2",
         "multer": "^2.0.2"
     },
     "devDependencies": {
         "@types/bcrypt": "^6.0.0",
+        "@types/cookie-parser": "^1.4.10",
         "@types/cors": "^2.8.19",
         "@types/express": "^5.0.3",
         "@types/jsonwebtoken": "^9.0.10",

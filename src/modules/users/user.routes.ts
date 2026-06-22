@@ -2,29 +2,33 @@ import { Router } from "express";
 import { UserController } from "./user.controller";
 import { authMiddleware } from "../../middleware/authMiddleware";
 import {
-  handleValidationErrors,
   validateEdit,
   validateLogin,
   validateRegister,
 } from "./user.validator";
+import { handleValidationErrors } from "../../middleware/validation";
 import { roleMiddleware } from "../../middleware/roleMiddleware";
+import { authLimiter } from "../../middleware/rateLimiter";
 
 const router = Router();
 const controller = new UserController();
 
 router.post(
   "/register",
+  authLimiter,
   validateRegister,
   handleValidationErrors,
   controller.createUser.bind(controller),
 );
 router.post(
   "/login",
+  authLimiter,
   validateLogin,
   handleValidationErrors,
   controller.loginUser.bind(controller),
 );
 
+router.post("/logout", controller.logoutUser.bind(controller));
 router.get("/me", authMiddleware, controller.quickLogin.bind(controller));
 router.get(
   "/all",

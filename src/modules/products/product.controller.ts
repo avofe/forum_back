@@ -3,7 +3,7 @@ import { ProductService } from "./product.service";
 
 const service = new ProductService();
 
-export class UserController {
+export class ProductController {
   async createProduct(req: Request, res: Response) {
     try {
       const file = req.file;
@@ -23,35 +23,58 @@ export class UserController {
       };
 
       const product = await service.createProduct(productData);
-      res.json(product);
-    } catch (err) {
-      res
-        .status(500)
-        .json({ message: "Ошибка при создании товара", error: err });
+      res.status(201).json(product);
+    } catch {
+      res.status(500).json({ message: "Ошибка при создании товара" });
     }
   }
 
   async getAllProducts(req: Request, res: Response) {
-    const users = await service.getAllProducts();
-    res.json(users);
+    try {
+      const users = await service.getAllProducts();
+      res.json(users);
+    } catch {
+      res.status(500).json({ message: "Ошибка при получении товаров" });
+    }
   }
 
   async getProductById(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    const user = await service.getProductById(id);
-    res.json(user);
+    try {
+      const id = Number(req.params.id);
+      const user = await service.getProductById(id);
+      if (!user) {
+        return res.status(404).json({ message: "Товар не найден" });
+      }
+      res.json(user);
+    } catch {
+      res.status(500).json({ message: "Ошибка при получении товара" });
+    }
   }
 
   async updateProduct(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    const user = await service.updateProduct(id, req.body);
-    res.json(user);
+    try {
+      const id = Number(req.params.id);
+      const user = await service.updateProduct(id, req.body);
+      res.json(user);
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("RecordNotFound")) {
+        return res.status(404).json({ message: "Товар не найден" });
+      }
+      res.status(500).json({ message: "Ошибка при обновлении товара" });
+    }
   }
 
   async deleteProduct(req: Request, res: Response) {
-    const id = Number(req.params.id);
-    await service.deleteProduct(id);
-    res.json({ message: "Deleted" });
+    try {
+      const id = Number(req.params.id);
+      await service.deleteProduct(id);
+      res.json({ message: "Deleted" });
+    } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("RecordNotFound")) {
+        return res.status(404).json({ message: "Товар не найден" });
+      }
+      res.status(500).json({ message: "Ошибка при удалении товара" });
+    }
   }
 
   async findProductsByName(req: Request, res: Response) {
@@ -65,8 +88,8 @@ export class UserController {
     try {
       const products = await service.findProducts(q);
       res.json(products);
-    } catch (error) {
-      res.status(500).json({ message: "Ошибка поиска", error: error });
+    } catch {
+      res.status(500).json({ message: "Ошибка поиска" });
     }
   }
 
@@ -84,8 +107,8 @@ export class UserController {
 
       const { products, count } = await service.filterProducts(filter);
       res.json({ products, count });
-    } catch (error) {
-      res.status(500).json({ message: "Ошибка фильтрации", error });
+    } catch {
+      res.status(500).json({ message: "Ошибка фильтрации" });
     }
   }
 }
