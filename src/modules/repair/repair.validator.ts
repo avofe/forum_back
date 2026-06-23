@@ -7,9 +7,8 @@ export const validateRepair = [
     .withMessage("Причина обращения обязательна"),
 
   body("comment")
+    .optional()
     .trim()
-    .notEmpty()
-    .withMessage("Описание обязательно")
     .isLength({ max: 2000 })
     .withMessage("Описание не должно превышать 2000 символов"),
 
